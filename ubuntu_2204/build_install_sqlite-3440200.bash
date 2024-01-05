@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # CONFIG
 
 INSTALL_DIR=${HOME}/local

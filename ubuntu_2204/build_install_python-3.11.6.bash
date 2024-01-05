@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # This script installs python-3.11.6 into $HOME/local.
 # It provides options to build and install
 # - openssl-3.1.4
