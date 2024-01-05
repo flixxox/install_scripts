@@ -3,12 +3,12 @@
 # This script installs python-3.11.6 into $HOME/local.
 # It provides options to build and install
 # - openssl-3.1.4
-# - sqlite 3440200
+# - sqlite-3.44.2
+# locally into the same directory.
 # The script copies pre-built libraries for 
 # - bz2
 # - lzma
 # into the python dynamic library directory.
-# locally into the same directory.
 # If DO_BACKUP=true, a previous $HOME/local is saved.
 
 # ============ CONFIG
