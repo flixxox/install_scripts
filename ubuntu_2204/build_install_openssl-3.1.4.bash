@@ -3,34 +3,46 @@
 
 SSL_IMPORT_CONFIG_FROM=$1
 
-INSTALL_DIR=${HOME}/lib
-SSL_SOURCE=${INSTALL_DIR}/openssl-3.1.4
-SSL_BUILD=${INSTALL_DIR}/openssl-3.1.4-build
+INSTALL_DIR=${HOME}/local
+BUILD_DIR=${INSTALL_DIR}/build
 
-echo "SSL source dir ${SSL_SOURCE}"
-echo "SSL build dir ${SSL_BUILD}"
+SSL_SOURCE=${BUILD_DIR}/openssl-3.1.4
 
-# CLEAN PREVIOUS INSTALL
+echo Install dir: ${INSTALL_DIR}
+echo Build dir: ${BUILD_DIR}
 
-rm -r $SSL_SOURCE | true
-rm -r $SSL_BUILD | true
-mkdir -p $SSL_BUILD
+# CREATE
+
+if [ ! -d "$INSTALL_DIR" ]; then
+    mkdir -p $INSTALL_DIR
+fi
+
+if [ ! -d "$BUILD_DIR" ]; then
+    mkdir -p $BUILD_DIR
+fi
 
 # INSTALL
 
-cd $INSTALL_DIR
+cd $BUILD_DIR
 wget -nc https://www.openssl.org/source/openssl-3.1.4.tar.gz
-tar -zxvf ${SSL_SOURCE}.tar.gz
+echo "Extracting to ${SSL_SOURCE}" && tar -zxf ${SSL_SOURCE}.tar.gz
 
 cd $SSL_SOURCE
-./Configure --prefix="${SSL_BUILD}" --openssldir="${SSL_BUILD}/ssl"
-make
+./Configure --prefix="${INSTALL_DIR}" --openssldir="${INSTALL_DIR}/ssl"
+make -j 2
 make install
 
-ln -s ${SSL_BUILD}/lib64 ${SSL_BUILD}/lib
+# Symlink a few files
+
+if [ ! -d "${INSTALL_DIR}/lib" ]; then
+    mkdir -p ${INSTALL_DIR}/lib
+fi
+
+ln -s ${INSTALL_DIR}/lib64/* ${INSTALL_DIR}/lib
 
 if [ -d "$1" ]; then
-    ln -s $SSL_IMPORT_CONFIG_FROM ${SSL_BUILD}/ssl
+    rm -r ${INSTALL_DIR}/ssl
+    ln -s $SSL_IMPORT_CONFIG_FROM ${INSTALL_DIR}
 else
     echo "ERROR! Did not find existing config: $SSL_IMPORT_CONFIG_FROM"
 fi

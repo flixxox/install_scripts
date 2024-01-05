@@ -1,24 +1,32 @@
 # CONFIG
 
-INSTALL_DIR="$HOME/lib"
-SQLITE_SOURCE=${INSTALL_DIR}/sqlite-autoconf-3440200
-SQLITE_BUILD=${INSTALL_DIR}/sqlite-3440200-build
+INSTALL_DIR=${HOME}/local
+BUILD_DIR=${INSTALL_DIR}/build
 
-# CLEAN PREVIOUS INSTALL
+SQLITE_SOURCE=${BUILD_DIR}/sqlite-autoconf-3440200
 
-rm -r $SQLITE_SOURCE
-rm -r $SQLITE_BUILD
-mkdir -p $SQLITE_BUILD
+echo Install dir: ${INSTALL_DIR}
+echo Build dir: ${BUILD_DIR}
+
+# CREATE
+
+if [ ! -d "$INSTALL_DIR" ]; then
+    mkdir -p $INSTALL_DIR
+fi
+
+if [ ! -d "$BUILD_DIR" ]; then
+    mkdir -p $BUILD_DIR
+fi
 
 # INSTALL
 
-cd $INSTALL_DIR
+cd $BUILD_DIR
 wget -nc https://sqlite.org/2023/sqlite-autoconf-3440200.tar.gz
-tar -zxvf ${SQLITE_SOURCE}.tar.gz
+echo "Extracting to ${SQLITE_SOURCE}" && tar -zxf ${SQLITE_SOURCE}.tar.gz
 
 cd $SQLITE_SOURCE
-./configure --prefix=${SQLITE_BUILD}
-make
+./configure --prefix=${INSTALL_DIR}
+make -j 2
 make install
 
 # CLEAN UP
