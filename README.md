@@ -11,8 +11,10 @@ Every script installs the specified package into `$HOME/local`.
 <ul>
     <li> Ubuntu 22.04
     <ul>
-        <li> OpenSSL 3.1.4
         <li> Python 3.11.6
+        <li> Python 3.12.9
+        <li> OpenSSL 3.1.4
         <li> Sqlite 3.44.2
+        <li> Poetry Latest
     </ul>
 </ul>
